@@ -1,3 +1,5 @@
+import 'react-native-url-polyfill/auto';
+import 'react-native-get-random-values';
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
