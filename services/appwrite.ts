@@ -2,6 +2,7 @@ import { Client, Databases, ID, Query } from 'appwrite';
 
 const DATABASE_ID = process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!;
 const COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_COLLECTION_ID!;
+const FAVORITES_COLLECTION_ID = process.env.EXPO_PUBLIC_APPWRITE_FAVORITES_COLLECTION_ID!;
 
 const client = new Client()
     .setEndpoint('https://fra.cloud.appwrite.io/v1')
@@ -62,3 +63,50 @@ export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> 
     }
     
 }
+
+
+export const handleFavoriteToggle = async (movie: Movie): Promise<'added' | 'removed' | null | SavedMovie> => {
+  try {
+    const response = await databases.listDocuments(
+      DATABASE_ID,
+      FAVORITES_COLLECTION_ID,
+      [
+        Query.equal('movie_id', movie.id),
+      ]
+    );
+
+    if (response.total > 0) {
+      // Movie already favorited — remove it
+      const docId = response.documents[0].$id;
+      await databases.deleteDocument(DATABASE_ID, FAVORITES_COLLECTION_ID, docId);
+      return 'removed';
+    } else {
+      // Movie not in favorites — add it
+      await databases.createDocument(DATABASE_ID, FAVORITES_COLLECTION_ID, ID.unique(), {
+        movie_id: movie.id,
+        title: movie.title,
+        poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        vote_average: movie.vote_average,
+        release_date: movie.release_date
+      });
+      return 'added';
+    }
+  } catch (err) {
+    console.error('Error toggling favorite:', err);
+    return null;
+  }
+};
+
+export const getSavedFavorites = async () => {
+  try {
+    const response = await databases.listDocuments(
+      DATABASE_ID,
+      FAVORITES_COLLECTION_ID
+    );
+
+    return response.documents;
+  } catch (err) {
+    console.error('Error fetching favorites:', err);
+    return [];
+  }
+};
