@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import { icons } from '@/constants/icons';
 import { handleFavoriteToggle } from '@/services/appwrite';
 
-const MovieCard = (movie: Movie) => {
+const MovieCard = ({ movie }: { movie: Movie }) => {
   const { id, poster_path, title, vote_average, release_date } = movie;
   const [isFavorite, setIsFavorite] = useState(false);
 

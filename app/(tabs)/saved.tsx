@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { getSavedFavorites } from '@/services/appwrite';
 import { icons } from '@/constants/icons';
 import useFetch from '@/services/useFetch';
-
+import { Link } from 'expo-router';
 
 export default function Saved() {
   const {
@@ -40,8 +40,16 @@ export default function Saved() {
     <View className="bg-primary flex-1 px-6 pt-10">
       <FlatList
         data={isFavorite}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item) => item.$id.toString()}
+        ListHeaderComponent={
+          <View>
+            <Image source={icons.logo} className="w-12 h-10 mt-10 mb-5 mx-auto" />
+            <Text className="text-lg text-white font-bold mt-5 mb-3">Saved Movies</Text>
+          </View>
+        }
         renderItem={({ item }) => (
+          <Link href={`/movies/${item.movie_id}`} asChild>
+            <TouchableOpacity className='w-auto'>
           <View className="relative mb-6">
             <Image
               source={{ uri: item.poster_url }}
@@ -63,8 +71,13 @@ export default function Saved() {
               </Text>
             </View>
           </View>
+          </TouchableOpacity>
+          </Link>
         )}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
 }
+

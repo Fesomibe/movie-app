@@ -73,7 +73,7 @@ export default function Index() {
               data={movies}
               renderItem={({ item }) => (
                 <MovieCard 
-                  { ...item}
+                  movie={item}
                 />
               )}
 
