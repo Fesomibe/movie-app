@@ -41,37 +41,50 @@ export default function Saved() {
       <FlatList
         data={isFavorite}
         keyExtractor={(item) => item.$id.toString()}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: 'space-between',
+          marginBottom: 16,
+        }}
         ListHeaderComponent={
           <View>
-            <Image source={icons.logo} className="w-12 h-10 mt-10 mb-5 mx-auto" />
-            <Text className="text-lg text-white font-bold mt-5 mb-3">Saved Movies</Text>
+            <Image
+              source={icons.logo}
+              className="w-12 h-10 mt-10 mb-5 mx-auto"
+            />
+            <Text className="text-lg text-white font-bold mt-5 mb-3">
+              Saved Movies
+            </Text>
           </View>
         }
         renderItem={({ item }) => (
           <Link href={`/movies/${item.movie_id}`} asChild>
-            <TouchableOpacity className='w-auto'>
-          <View className="relative mb-6">
-            <Image
-              source={{ uri: item.poster_url }}
-              className="w-full h-52 rounded-lg"
-              resizeMode="stretch"
-            />
-            <Text className="text-sm font-bold text-white mt-2" numberOfLines={1}>
-              {item.title}
-            </Text>
-            <View className="flex-row items-center justify-start gap-x-1">
-              <Image source={icons.star} className="size-4" />
-              <Text className="text-xs text-white font-bold uppercase">
-                {Math.round(item.vote_average / 2)}
-              </Text>
-            </View>
-            <View className="flex-row items-center justify-between">
-              <Text className="text-xs text-light-300 font-medium mt-1">
-                {item.release_date?.split('-')[0]}
-              </Text>
-            </View>
-          </View>
-          </TouchableOpacity>
+            <TouchableOpacity className="w-[48%]">
+              <View className="relative">
+                <Image
+                  source={{ uri: item.poster_url }}
+                  className="w-full h-52 rounded-lg"
+                  resizeMode="stretch"
+                />
+                <Text
+                  className="text-sm font-bold text-white mt-2"
+                  numberOfLines={1}
+                >
+                  {item.title}
+                </Text>
+                <View className="flex-row items-center justify-start gap-x-1">
+                  <Image source={icons.star} className="size-4" />
+                  <Text className="text-xs text-white font-bold uppercase">
+                    {Math.round(item.vote_average / 2)}
+                  </Text>
+                </View>
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-xs text-light-300 font-medium mt-1">
+                    {item.release_date?.split('-')[0]}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           </Link>
         )}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -80,4 +93,3 @@ export default function Saved() {
     </View>
   );
 }
-
