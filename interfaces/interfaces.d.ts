@@ -85,3 +85,21 @@ interface TrendingCardProps {
 interface SavedProps {
   movie: SavedMovie;
 }
+
+interface CustomInputProps {
+    placeholder?: string;
+    value?: string;
+    onChangeText?: (text: string) => void;
+    label: string;
+    secureTextEntry?: boolean;
+    keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'
+}
+
+type CustomButtonProps = {
+  onPress: () => void
+  title?: string
+  style?: string
+  textStyle?: string
+  leftIcon?: React.ReactNode
+  isLoading?: boolean
+}

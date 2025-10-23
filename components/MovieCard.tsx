@@ -32,7 +32,6 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
             resizeMode="cover"
           />
 
-          {/* ❤️ Favorite Button */}
           <TouchableOpacity
             onPress={(e) => {
               e.stopPropagation();
