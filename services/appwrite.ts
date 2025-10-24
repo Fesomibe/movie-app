@@ -66,23 +66,26 @@ export const getTrendingMovies = async (): Promise<TrendingMovie[] | undefined> 
 }
 
 
-export const handleFavoriteToggle = async (movie: Movie): Promise<'added' | 'removed' | null | SavedMovie> => {
+export const handleFavoriteToggle = async (
+  movie: Movie
+): Promise<'added' | 'removed' | null | SavedMovie> => {
   try {
+    if (!movie?.id) {
+      console.error('Movie ID is missing!', movie);
+      return null;
+    }
+
     const response = await databases.listDocuments(
       DATABASE_ID,
       FAVORITES_COLLECTION_ID,
-      [
-        Query.equal('movie_id', movie.id),
-      ]
+      [Query.equal('movie_id', movie.id)]
     );
 
     if (response.total > 0) {
-      // Movie already favorited — remove it
       const docId = response.documents[0].$id;
       await databases.deleteDocument(DATABASE_ID, FAVORITES_COLLECTION_ID, docId);
       return 'removed';
     } else {
-      // Movie not in favorites — add it
       await databases.createDocument(DATABASE_ID, FAVORITES_COLLECTION_ID, ID.unique(), {
         movie_id: movie.id,
         title: movie.title,
@@ -97,6 +100,7 @@ export const handleFavoriteToggle = async (movie: Movie): Promise<'added' | 'rem
     return null;
   }
 };
+
 
 export const getSavedFavorites = async () => {
   try {

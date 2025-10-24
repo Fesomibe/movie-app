@@ -24,7 +24,6 @@ const AuthScreen = () => {
   const { signIn, signUp } = useAuth()
 
   const handleAuth = async () => {
-    // ✅ Basic validation
     if (isSignUp && !fullName.trim()) {
       setError('Please enter your full name.')
       return
